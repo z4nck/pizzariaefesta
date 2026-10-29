@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel | Pizzaria & Festa</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="dashboard-page">
+  <header class="topbar">
+    <a class="brand" href="/">PIZZARIA <span>&</span> FESTA</a>
+    <form action="/logout" method="POST"><button class="logout-button" type="submit">Sair</button></form>
+  </header>
+  <main class="dashboard">
+    <p class="eyebrow">ÁREA RESTRITA</p>
+    <h1>Bem-vindo ao painel.</h1>
+    <p class="muted">Login realizado com sua conta do GitHub.</p>
+    <div class="user-card">
+      <img id="avatar" alt="Foto do perfil" src="">
+      <div><h2 id="user-name">Carregando...</h2><a id="user-link" href="#" target="_blank" rel="noreferrer">Ver perfil no GitHub</a></div>
+    </div>
+    <div class="dashboard-note"><strong>Próximo passo</strong><p>Este painel é a base da área administrativa. Você pode adicionar aqui o gerenciamento de pedidos, cardápio, reservas e eventos.</p></div>
+  </main>
+  <script>
+    fetch("/api/usuario")
+      .then(response => {
+        if (!response.ok) throw new Error("Sessão inválida");
+        return response.json();
+      })
+      .then(data => {
+        document.getElementById("user-name").textContent = data.user.name || data.user.username;
+        document.getElementById("avatar").src = data.user.avatar || "";
+        document.getElementById("user-link").href = data.user.profileUrl;
+      })
+      .catch(() => window.location.href = "/");
+  </script>
+</body>
+</html>
